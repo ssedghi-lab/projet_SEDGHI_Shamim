@@ -1,0 +1,51 @@
+<div class="registration-container">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <!-- Username Field -->
+        <div class="form-group">
+            <label for="username">Nom d'utilisateur:</label>
+            <input type="text" id="username" formControlName="username" class="form-control">
+            <!-- Error Message for Username -->
+            <div *ngIf="registerForm.get('username')?.errors && registerForm.get('username')?.touched">
+                <small class="text-danger" *ngIf="registerForm.get('username')?.errors?.['required']">
+            Le nom d'utilisateur est requis.
+          </small>
+                <small class="text-danger" *ngIf="registerForm.get('username')?.errors?.['minlength']">
+            Le nom d'utilisateur doit contenir au moins 3 caractères.
+          </small>
+            </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" formControlName="password" class="form-control">
+            <div *ngIf="registerForm.get('password')?.errors && registerForm.get('password')?.touched">
+                <small class="text-danger" *ngIf="registerForm.get('password')?.errors?.['required']">
+            Le mot de passe est requis.
+          </small>
+                <small class="text-danger" *ngIf="registerForm.get('password')?.errors?.['minlength']">
+            Le mot de passe doit contenir au moins 6 caractères.
+          </small>
+            </div>
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="form-group">
+            <label for="confirmPassword">Confirmer le mot de passe:</label>
+            <input type="password" id="confirmPassword" formControlName="confirmPassword" class="form-control">
+            <div *ngIf="registerForm.get('confirmPassword')?.errors && registerForm.get('confirmPassword')?.touched">
+                <small class="text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">
+            La confirmation du mot de passe est requise.
+          </small>
+                <small class="text-danger" *ngIf="registerForm.get('confirmPassword')?.errors?.['mustMatch']">
+            Les mots de passe ne correspondent pas.
+          </small>
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            <button type="submit" [disabled]="!registerForm.valid">S'inscrire</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+</head>
+
+<body>
+    <h2>Connexion</h2>
+    <form id="loginForm">
+        <label for="username">Nom d'utilisateur:</label><br>
+        <input type="text" id="username" name="username"><br>
+        <label for="password">Mot de passe:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="button" onclick="login()">Connexion</button>
+    </form>
+    <script>
+        function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('http://localhost:3000/api/user/login', { // URL corrigée
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username,
+                        password
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(error => {
+                            throw new Error(error.error || 'Erreur inconnue');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('Token: ' + data.token);
+                })
+                .catch(error => {
+                    alert('Erreur: ' + error.message);
+                });
+        }
+    </script>
+</body>
+
+</html>

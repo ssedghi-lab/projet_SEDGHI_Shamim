@@ -1,0 +1,12 @@
+<br />
+<div class="linkList">
+    <a routerLink="/login">Connexion </a>
+    <a routerLink="/register">Inscription </a>
+
+    <div *ngIf="authUserId" class="linkList">
+        <a routerLink="/product-list">Liste </a>
+
+    </div>
+
+</div>
+<router-outlet></router-outlet>

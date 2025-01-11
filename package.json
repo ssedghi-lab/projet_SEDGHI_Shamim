@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@angular/core": "^19.0.6",
+    "install": "^0.13.0",
+    "node.js": "^0.0.1-security",
+    "npm": "^11.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
