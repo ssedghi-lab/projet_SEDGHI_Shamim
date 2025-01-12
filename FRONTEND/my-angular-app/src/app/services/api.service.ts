@@ -74,7 +74,7 @@ export class ApiService {
         'Content-Type': 'application/x-www-form-urlencoded',
       }),
     };
-    data = `login=${user.username}&password=${user.password}&mail=${user.mail}&nom=${user.nom}&prenom=${user.prenom}`;
+    data = `login=${user.username}&password=${user.password}`;
     return this.http.put(
       environment.backendUpdateClient,
       data,

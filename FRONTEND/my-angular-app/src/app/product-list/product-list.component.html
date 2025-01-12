@@ -2,7 +2,8 @@
     <h2>Product List</h2>
     <ul>
         <li *ngFor="let product of produits">
-            {{ product.nom }} - {{ product.prix | currency }}
+            {{ product.libelle }} - {{ product.prix | currency }}
         </li>
     </ul>
 </div>
+<p *ngIf="!produits.length">Aucun produit trouvé</p>

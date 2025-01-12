@@ -22,7 +22,6 @@ export class AuthGuard implements CanActivate {
         return true;
       }
     }
-    // Rediriger vers la page de connexion si non authentifié
     this.router.navigate(['/login']);
     return false;
   }

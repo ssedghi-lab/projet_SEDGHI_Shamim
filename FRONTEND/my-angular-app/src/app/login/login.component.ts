@@ -6,7 +6,7 @@ import { User } from '../shared/model/user';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -25,7 +25,8 @@ export class LoginFormComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -34,7 +35,6 @@ export class LoginFormComponent implements OnInit {
       this.apiService.getUser(userId).subscribe({
         next: (user: User | null) => {
           this.user = user ?? undefined;
-          // Naviguer vers la liste des produits si l'utilisateur est déjà connecté
           if (this.user) {
             this.router.navigate(['/product-list']);
           }
@@ -52,25 +52,32 @@ export class LoginFormComponent implements OnInit {
     console.log('Tentative de connexion avec:', { username, password });
     this.apiService.loginClient(username, password).subscribe({
       next: (response) => {
-        console.log('Réponse du serveur:', response);
-        const token = response.headers.get('Authorization')?.split(' ')[1];
-        if (token) {
-          this.apiService.setToken(token);
-          this.user = response.body!;
-          console.log('Login successful!');
-          // Naviguer vers la liste des produits après une connexion réussie
-          this.router.navigate(['/product-list']);
+        // Vérifier d'abord si response.body est non-null
+        if (response.body) {
+          const token = response.body.token;  // Assurez-vous que cette ligne corresponde à la structure de votre réponse
+          if (token) {
+            console.log('Token reçu:', token);
+            this.apiService.setToken(token);
+            this.router.navigate(['/product-list']);
+          } else {
+            console.error('Token non reçu:', response);
+            alert('Login échoué. Aucun token reçu.');
+          }
         } else {
-          alert('Login échoué. Aucun token reçu.');
+          // Gérer le cas où response.body est null
+          console.error('Réponse sans corps');
+          alert('Erreur lors de la connexion: Aucune donnée reçue');
         }
       },
       error: (err) => {
         console.error('Login failed', err);
         alert('Informations de connexion invalides.');
-      },
+      }
     });
   }
+  
 
+  
   deconnexion() {
     this.apiService.logout();
     this.user = undefined;

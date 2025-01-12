@@ -1,5 +1,8 @@
+const bcrypt = require('bcrypt');
+
 module.exports = {
     up: async(queryInterface, Sequelize) => {
+        // Créer la table "users"
         await queryInterface.createTable('users', {
             id: {
                 type: Sequelize.UUID,
@@ -18,31 +21,14 @@ module.exports = {
             }
         });
 
-        await queryInterface.createTable('products', {
-            id: {
-                type: Sequelize.UUID,
-                defaultValue: Sequelize.literal('gen_random_uuid()'),
-                primaryKey: true,
-                allowNull: false
-            },
-            ref: {
-                type: Sequelize.STRING,
-                allowNull: false,
-                unique: true
-            },
-            libelle: {
-                type: Sequelize.STRING,
-                allowNull: false
-            },
-            prix: {
-                type: Sequelize.FLOAT,
-                allowNull: false
-            }
-        });
+        const hashedPassword = await bcrypt.hash('toto', 10);
+        await queryInterface.bulkInsert('users', [{
+            username: 'emma',
+            password: hashedPassword
+        }], {});
     },
 
     down: async(queryInterface, Sequelize) => {
-        await queryInterface.dropTable('products');
         await queryInterface.dropTable('users');
     }
 };

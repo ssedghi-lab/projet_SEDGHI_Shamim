@@ -5,7 +5,8 @@ export class AddProduit {
   constructor(public payload: Produit) {}
  
 }
- export class RemoveProduit {
+export class RemoveProduit {
     static readonly type = '[Panier] Remove Produit';
-    constructor(public id: number) {}
+    constructor(public id: string) {} // Assure-toi que le type ici correspond au type des id dans tes produits
   }
+  

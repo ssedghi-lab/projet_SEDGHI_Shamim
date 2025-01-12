@@ -18,7 +18,7 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<LoginResponse> {
+  /*login(username: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { username, password })
       .pipe(
         tap((response: LoginResponse) => {
@@ -29,7 +29,10 @@ export class AuthService {
           return throwError(() => new Error('Failed to login'));
         })
       );
-  }
+  }*/
+      login(username: string, password: string): Observable<any> {
+        return this.http.post('/api/login', { username, password });
+      }
   register(userData: {username: string; password: string}): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, userData)
       .pipe(

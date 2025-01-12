@@ -2,48 +2,31 @@
 const db = require('../models');
 const jwt = require('jsonwebtoken');
 const { ACCESS_TOKEN_SECRET } = process.env;
+const bcrypt = require('bcrypt');
 
 // Fonction pour générer le token JWT
 function generateAccessToken(user) {
-    return jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: '365d' });
+    return jwt.sign({ id: user.id, username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
 }
-
 exports.login = async(req, res) => {
-    const { username, password } = req.body;
-
-    // Vérification des champs requis
-    if (!username || !password) {
-        return res.status(400).json({ error: "Username et mot de passe requis" });
-    }
-
+    console.log('Login request:', req.body);
     try {
-        const user = await db.User.findOne({ where: { username } });
+        const user = await db.User.findOne({ where: { username: req.body.username } });
         if (!user) {
-            return res.status(401).json({ error: "Identifiants invalides" });
+            return res.status(401).send('Nom d\'utilisateur introuvable');
         }
-
-        // Comparer les mots de passe
-        const match = await user.validPassword(password);
-        if (!match) {
-            return res.status(401).json({ error: "Identifiants invalides" });
+        const isMatch = await bcrypt.compare(req.body.password, user.password);
+        if (!isMatch) {
+            return res.status(401).send('Mot de passe incorrect');
         }
-
-        // Création du token d'accès
-        const userPayload = {
-            id: user.id, // L'ID généré automatiquement
-            username: user.username,
-        };
-
-        const accessToken = generateAccessToken(userPayload);
-
-        // Réponse au client avec le token
-        res.setHeader("Authorization", `Bearer ${accessToken}`);
-        res.status(200).json({ user: userPayload, token: accessToken });
+        const token = generateAccessToken(user); // Utilisez la fonction ici
+        res.json({ token });
     } catch (error) {
-        console.error('Erreur lors du login:', error);
-        res.status(500).json({ error: "Erreur interne du serveur" });
+        console.error('Login error:', error);
+        res.status(500).send('Erreur du serveur');
     }
 };
+
 
 exports.addUser = async(req, res) => {
     const { username, password, mail, nom, prenom } = req.body;
@@ -56,9 +39,7 @@ exports.addUser = async(req, res) => {
         const newUser = await db.User.create({
             username,
             password,
-            mail,
-            nom,
-            prenom
+
         });
 
         console.log('New User Added:', newUser);
@@ -70,7 +51,7 @@ exports.addUser = async(req, res) => {
 };
 
 exports.updateUser = async(req, res) => {
-    const { username, password, mail, nom, prenom, id } = req.body;
+    const { username, password, id } = req.body;
 
     const pattern = /^[A-Za-z0-9]{1,20}$/;
     if (pattern.test(username) && pattern.test(password)) {

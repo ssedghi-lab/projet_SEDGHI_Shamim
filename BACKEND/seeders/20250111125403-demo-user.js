@@ -5,16 +5,11 @@ module.exports = {
         const hashedPassword = await bcrypt.hash('toto', 10);
         return queryInterface.bulkInsert('users', [{
             username: 'emma',
-            password: hashedPassword,
-            mail: 'emma@example.com',
-            nom: 'BOVARY',
-            prenom: 'Emma',
-            created_at: new Date(),
-            updated_at: new Date()
+            password: hashedPassword
         }], {});
     },
 
     down: async(queryInterface, Sequelize) => {
         return queryInterface.bulkDelete('users', { username: 'emma' }, {});
     }
-}
+};
