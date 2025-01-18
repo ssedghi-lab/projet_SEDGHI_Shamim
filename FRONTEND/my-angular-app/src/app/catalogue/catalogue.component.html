@@ -1,0 +1,11 @@
+<h2>Catalogue</h2>
+<div>
+    <input type="text" placeholder="Rechercher un produit" [(ngModel)]="searchTerm" (input)="onSearchChange()" />
+</div>
+
+<ul>
+    <li *ngFor="let p of produits">
+        {{ p.libelle }} - {{ p.prix }} €
+        <button (click)="ajouterAuPanier(p)">Ajouter</button>
+    </li>
+</ul>

@@ -1,12 +1,17 @@
 <br />
+<app-header></app-header>
+<app-search></app-search>
 <div class="linkList">
-    <a routerLink="/login">Connexion </a>
-    <a routerLink="/register">Inscription </a>
+    <nav class="sidebar">
+        <ul>
+            <li><a routerLink="/login"><i class="fa fa-sign-in-alt"></i> Connexion</a></li>
+            <li><a routerLink="/register"><i class="fa fa-user-plus"></i> Inscription</a></li>
+            <li><a routerLink="/catalogue" routerLinkActive="active"><i class="fa fa-book"></i> Catalogue</a></li>
+            <li><a routerLink="/panier" routerLinkActive="active"><i class="fa fa-shopping-cart"></i> Panier</a></li>
+            <li><a routerLink="/cards" routerLinkActive="active"><i class="fa fa-shopping-cart"></i> cards</a></li>
+        </ul>
 
-    <div *ngIf="authUserId" class="linkList">
-        <a routerLink="/product-list">Liste </a>
-
-    </div>
+    </nav>
 
 </div>
 <router-outlet></router-outlet>

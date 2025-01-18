@@ -36,7 +36,7 @@ export class LoginFormComponent implements OnInit {
         next: (user: User | null) => {
           this.user = user ?? undefined;
           if (this.user) {
-            this.router.navigate(['/product-list']);
+            this.router.navigate(['/products']);
           }
         },
         error: (err) => {
@@ -45,34 +45,20 @@ export class LoginFormComponent implements OnInit {
       });
     }
   }
-
   connexion() {
-    const username = this.connectionForm.get('username')?.value ?? '';
-    const password = this.connectionForm.get('password')?.value ?? '';
-    console.log('Tentative de connexion avec:', { username, password });
+    const username = this.connectionForm.get('username')?.value || '';
+    const password = this.connectionForm.get('password')?.value || '';
     this.apiService.loginClient(username, password).subscribe({
       next: (response) => {
-        // Vérifier d'abord si response.body est non-null
-        if (response.body) {
-          const token = response.body.token;  // Assurez-vous que cette ligne corresponde à la structure de votre réponse
-          if (token) {
-            console.log('Token reçu:', token);
-            this.apiService.setToken(token);
-            this.router.navigate(['/product-list']);
-          } else {
-            console.error('Token non reçu:', response);
-            alert('Login échoué. Aucun token reçu.');
-          }
+        if (response.body?.token) {
+          const token = response.body.token;
+          this.apiService.setToken(token);
+          this.router.navigate(['/products']); // Route corrigée
         } else {
-          // Gérer le cas où response.body est null
-          console.error('Réponse sans corps');
-          alert('Erreur lors de la connexion: Aucune donnée reçue');
+          alert('Login échoué.');
         }
       },
-      error: (err) => {
-        console.error('Login failed', err);
-        alert('Informations de connexion invalides.');
-      }
+      error: () => alert('Informations de connexion invalides.')
     });
   }
   

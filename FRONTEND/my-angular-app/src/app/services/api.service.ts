@@ -55,8 +55,11 @@ export class ApiService {
   }
 
   public getCalague(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(environment.backendCatalogue);
+    const token = localStorage.getItem('token') || '';
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<Produit[]>(environment.backendCatalogue, { headers });
   }
+  
 
   public addUser(user: { username: string; password: string }): Observable<any> {
     return this.http.post(`${environment.apiUrl}/user/add`, user, {

@@ -1,1 +1,7 @@
-<p>panier works!</p>
+<h2>Mon Panier</h2>
+<ul>
+    <li *ngFor="let p of produits$ | async">
+        {{ p.libelle }} - {{ p.prix }}€
+        <button (click)="supprimerProduit(p)">Supprimer</button>
+    </li>
+</ul>

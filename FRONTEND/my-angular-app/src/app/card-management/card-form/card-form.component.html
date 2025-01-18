@@ -1,0 +1,62 @@
+<form [formGroup]="cardForm" (ngSubmit)="onSubmit()" class="card-form">
+    <!-- Nom de la carte -->
+    <div class="form-group">
+        <label for="name">Nom de la carte</label>
+        <input id="name" formControlName="name" appCardCodeFormatter />
+        <div class="error" *ngIf="isFieldInvalid('name')">
+            Le nom de la carte est requis.
+        </div>
+    </div>
+
+    <!-- Code de la carte -->
+    <div class="form-group">
+        <label for="code">Code de la carte</label>
+        <input id="code" formControlName="code" appCardCodeFormatter />
+        <div class="error" *ngIf="isFieldInvalid('code')">
+            <div *ngIf="cardForm.get('code')?.hasError('required')">
+                Le code de la carte est requis.
+            </div>
+            <div *ngIf="cardForm.get('code')?.hasError('pattern')">
+                Le code doit être composé de 16 chiffres.
+            </div>
+        </div>
+    </div>
+
+    <!-- CCV -->
+    <div class="form-group">
+        <label for="ccv">CCV</label>
+        <input id="ccv" formControlName="ccv" appCardCodeFormatter />
+        <div class="error" *ngIf="isFieldInvalid('ccv')">
+            <div *ngIf="cardForm.get('ccv')?.hasError('required')">
+                Le CCV est requis.
+            </div>
+            <div *ngIf="cardForm.get('ccv')?.hasError('pattern')">
+                Le CCV doit être composé de 3 ou 4 chiffres.
+            </div>
+        </div>
+    </div>
+
+    <!-- Mois d'expiration -->
+    <div class="form-group">
+        <label for="expiryMonth">Mois d'expiration</label>
+        <input id="expiryMonth" type="number" formControlName="expiryMonth" min="1" max="12" appCardCodeFormatter />
+        <div class="error" *ngIf="isFieldInvalid('expiryMonth')">
+            <div *ngIf="cardForm.get('expiryMonth')?.hasError('required')">
+                Le mois d'expiration est requis.
+            </div>
+            <div *ngIf="cardForm.get('expiryMonth')?.hasError('min') || cardForm.get('expiryMonth')?.hasError('max')">
+                Le mois doit être entre 1 et 12.
+            </div>
+        </div>
+    </div>
+
+    <!-- Année d'expiration -->
+    <div class="form-group">
+        <label for="expiryYear">Année d'expiration</label>
+        <input id="expiryYear" type="number" formControlName="expiryYear" appCardCodeFormatter />
+    </div>
+
+
+    <!-- Bouton Soumettre -->
+    <button type="submit" [disabled]="cardForm.status != 'VALID'">SUBMIT</button>
+</form>

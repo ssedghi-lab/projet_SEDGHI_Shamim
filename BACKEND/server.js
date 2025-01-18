@@ -12,9 +12,10 @@ const db = require('./models'); // Importer Sequelize
 
 // Configuration des options CORS
 const corsOptions = {
-    origin: "*", // Modifier selon les besoins de sécurité
+    origin: "*",
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: "Content-Type, Authorization"
+    allowedHeaders: "Content-Type, Authorization",
+    exposedHeaders: 'Authorization'
 };
 
 // Middleware
@@ -33,7 +34,12 @@ require("./routes/user.routes")(app);
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-
+app.get('/api/products/products', (req, res) => {
+    res.json([
+        { id: 1, libelle: 'Produit A', prix: 10 },
+        { id: 2, libelle: 'Produit B', prix: 20 }
+    ]);
+});
 // Gestion des fichiers statiques de l'application Angular
 app.use(express.static(path.join(__dirname, 'FRONTEND/dist/my-angular-app')));
 

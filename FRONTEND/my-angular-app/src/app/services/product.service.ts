@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { Produit } from '../shared/model/produit.model';
+import { environment } from '../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private baseURL = 'http://localhost:3000/api';
-
+  private baseURL = `${environment.apiUrl}/products/products`;
   constructor(private http: HttpClient) {}
 
-  getProducts(): Observable<any> {
-    const token = sessionStorage.getItem('jwtToken'); 
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
-    });
-    return this.http.get(`${this.baseURL}/products`, { headers });
+
+  getProduits(): Observable<any[]> {
+    return this.http.get<any[]>(this.baseURL);
   }
-}
+}   

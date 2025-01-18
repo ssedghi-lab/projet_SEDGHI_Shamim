@@ -40,7 +40,7 @@ export class PanierState {
   @Action(RemoveProduit)
   removeProduit(ctx: StateContext<PanierStateModel>, action: RemoveProduit) {
     const state = ctx.getState();
-    const index = state.produits.findIndex(p => p.id === action.id);
+    const index = state.produits.findIndex(p => p.id.toString() === action.id);
     if (index > -1) {
       const produits = [...state.produits];
       produits.splice(index, 1);

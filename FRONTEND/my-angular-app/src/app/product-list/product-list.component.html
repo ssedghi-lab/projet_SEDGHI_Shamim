@@ -1,9 +1,0 @@
-<div>
-    <h2>Product List</h2>
-    <ul>
-        <li *ngFor="let product of produits">
-            {{ product.libelle }} - {{ product.prix | currency }}
-        </li>
-    </ul>
-</div>
-<p *ngIf="!produits.length">Aucun produit trouvé</p>

@@ -1,22 +1,32 @@
 const db = require('../models');
 
-exports.get = async(req, res) => {
-    console.log('Requête reçue pour obtenir les produits:', req.user);
+exports.getAllProducts = async(req, res) => {
     try {
         const products = await db.Product.findAll();
-        res.setHeader('Content-Type', 'application/json');
         res.json(products);
     } catch (error) {
-        console.error('Erreur lors de la récupération des produits:', error);
-        res.status(500).json({ error: "Erreur interne du serveur" });
+        res.status(500).send(error.message);
+    }
+};
+
+exports.get = async(req, res) => {
+    try {
+        // req.params.id -> identifiant du produit
+        const product = await db.Product.findOne({ where: { id: req.params.id } });
+        if (!product) {
+            return res.status(404).json({ message: 'Produit non trouvé' });
+        }
+        res.json(product);
+    } catch (error) {
+        console.error('Erreur lors de la récupération du produit:', error);
+        res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 };
 
 exports.add = async(req, res) => {
     const { ref, libelle, prix } = req.body;
-
     if (!ref || !libelle || prix == null) {
-        return res.status(400).json({ error: "Réf, libellé et prix sont requis" });
+        return res.status(400).json({ error: 'Réf, libellé et prix sont requis' });
     }
 
     try {
@@ -24,6 +34,6 @@ exports.add = async(req, res) => {
         res.status(201).json(newProduct);
     } catch (error) {
         console.error('Erreur lors de l\'ajout du produit:', error);
-        res.status(500).json({ error: "Erreur interne du serveur" });
+        res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 };

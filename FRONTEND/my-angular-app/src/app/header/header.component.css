@@ -1,0 +1,15 @@
+nav {
+    background-color: rgb(241, 178, 61);
+    color: #333;
+    padding: 10px 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+span {
+    font-weight: bold;
+    margin-right: 20px;
+}
