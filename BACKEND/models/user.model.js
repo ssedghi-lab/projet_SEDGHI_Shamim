@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         tableName: 'users',
-        timestamps: false, // Désactive createdAt et updatedAt
+        timestamps: false,
         hooks: {
             beforeCreate: async(user) => {
                 if (user.password) {

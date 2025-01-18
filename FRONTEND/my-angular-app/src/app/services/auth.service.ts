@@ -14,25 +14,17 @@ interface UserProfile {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://localhost:3000/api/user';
 
   constructor(private http: HttpClient) {}
 
-  /*login(username: string, password: string): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { username, password })
-      .pipe(
-        tap((response: LoginResponse) => {
-          localStorage.setItem('authToken', response.token); 
-        }),
-        catchError((error: any) => {
-          console.error('Login failed:', error);
-          return throwError(() => new Error('Failed to login'));
-        })
-      );
-  }*/
-      login(username: string, password: string): Observable<any> {
+ 
+/*
+  login(username: string, password: string): Observable<any> {
         return this.http.post('/api/login', { username, password });
       }
+
+
   register(userData: {username: string; password: string}): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/register`, userData)
       .pipe(
@@ -64,5 +56,29 @@ export class AuthService {
           return throwError(() => new Error('Failed to update profile'));
         })
       );
-  }
+  }*/
+      registerUser(userData: { username: string; password: string }) {
+        return this.http.post(`${this.apiUrl}/register`, userData);
+      }
+    
+      loginUser(userData: { username: string; password: string }) {
+        return this.http.post<{ token: string }>(`${this.apiUrl}/login`, userData);
+      }
+    
+      // Stocker et récupérer le token
+      setToken(token: string) {
+        localStorage.setItem('token', token);
+      }
+    
+      getToken(): string | null {
+        return localStorage.getItem('token');
+      }
+    
+      isLoggedIn(): boolean {
+        return !!this.getToken(); // True si token existe
+      }
+    
+      logout() {
+        localStorage.removeItem('token');
+      }
 }

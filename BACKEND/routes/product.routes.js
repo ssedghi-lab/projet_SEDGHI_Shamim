@@ -14,6 +14,6 @@ module.exports = app => {
     // Si vous avez besoin d’une route protégée :
     // router.get('/secret', checkJwt, productController.get);
 
-    // On associe le tout à /api/products
+
     app.use('/api/products', router);
 };

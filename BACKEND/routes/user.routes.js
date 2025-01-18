@@ -9,7 +9,7 @@ module.exports = app => {
     router.post("/login", userController.login);
 
     // Route pour ajouter un utilisateur
-    router.post("/add-user", userController.addUser);
+    router.post("/register", userController.addUser);
 
     // Route pour mettre à jour un utilisateur
     router.put("/update-user", checkJwt, userController.updateUser);

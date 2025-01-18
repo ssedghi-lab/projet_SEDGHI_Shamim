@@ -53,7 +53,7 @@ export class LoginFormComponent implements OnInit {
         if (response.body?.token) {
           const token = response.body.token;
           this.apiService.setToken(token);
-          this.router.navigate(['/products']); // Route corrigée
+          this.router.navigate(['/products']); 
         } else {
           alert('Login échoué.');
         }
@@ -61,13 +61,29 @@ export class LoginFormComponent implements OnInit {
       error: () => alert('Informations de connexion invalides.')
     });
   }
+  onSubmit() {
+    // La valeur sera '' si c’est null ou undefined
+    const username = this.connectionForm.get('username')?.value ?? '';
+    const password = this.connectionForm.get('password')?.value ?? '';
   
-
+    if (this.connectionForm.valid) {
+      this.authService.loginUser({ username, password }).subscribe({
+        next: (res) => {
+          if (res.token) {
+            this.authService.setToken(res.token);
+            this.router.navigate(['/products']);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors de la connexion', err);
+        },
+      });
+    }
+  }
   
   deconnexion() {
     this.apiService.logout();
     this.user = undefined;
-    // Naviguer vers la page de connexion après déconnexion
     this.router.navigate(['/login']);
   }
 }

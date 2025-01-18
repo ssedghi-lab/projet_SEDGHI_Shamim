@@ -1,29 +1,29 @@
 // controllers/user.controllers.js
 const db = require('../models');
 const jwt = require('jsonwebtoken');
-const { ACCESS_TOKEN_SECRET } = process.env;
 const bcrypt = require('bcrypt');
+const User = db.User;
+const secretKey = process.env.ACCESS_TOKEN_SECRET;
 
-// Fonction pour générer le token JWT
 function generateAccessToken(user) {
     return jwt.sign({ id: user.id, username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
 }
 exports.login = async(req, res) => {
-    console.log('Login request:', req.body);
+    const { username, password } = req.body;
     try {
-        const user = await db.User.findOne({ where: { username: req.body.username } });
+        const user = await User.findOne({ where: { username } });
         if (!user) {
-            return res.status(401).send('Nom d\'utilisateur introuvable');
+            return res.status(401).json({ message: 'Utilisateur non trouvé' });
         }
-        const isMatch = await bcrypt.compare(req.body.password, user.password);
-        if (!isMatch) {
-            return res.status(401).send('Mot de passe incorrect');
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            return res.status(401).json({ message: 'Mot de passe incorrect' });
         }
-        const token = generateAccessToken(user); // Utilisez la fonction ici
+        const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '1h' });
         res.json({ token });
-    } catch (error) {
-        console.error('Login error:', error);
-        res.status(500).send('Erreur du serveur');
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Erreur serveur' });
     }
 };
 
