@@ -2,14 +2,13 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CardService } from '../../services/card-service.service';
 import { Card } from '../models/card.model';
-import { DirectivesDirective } from '../directives/directives.directive';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-card-form',
   templateUrl: './card-form.component.html',
   styleUrls: ['./card-form.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule , DirectivesDirective , CommonModule]
+  imports: [ReactiveFormsModule  , CommonModule]
 })
 export class CardFormComponent {
   cardForm: FormGroup;

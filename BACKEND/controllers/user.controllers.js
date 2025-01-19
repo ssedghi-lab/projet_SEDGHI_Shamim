@@ -5,9 +5,7 @@ const bcrypt = require('bcrypt');
 const User = db.User;
 const secretKey = process.env.ACCESS_TOKEN_SECRET;
 
-function generateAccessToken(user) {
-    return jwt.sign({ id: user.id, username: user.username }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '24h' });
-}
+
 exports.login = async(req, res) => {
     const { username, password } = req.body;
     try {

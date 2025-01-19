@@ -2,7 +2,7 @@
 
 // Définir une action pour la connexion
 export class Login {
-    static readonly type = '[Auth] Login'; // Nom de l'action, utilisé pour le débogage et les références
+    static readonly type = '[Auth] Login'; 
     constructor(public payload: { token: string, username: string }) {} // Payload contient le token JWT et le nom d'utilisateur
   }
   

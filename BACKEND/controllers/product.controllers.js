@@ -2,10 +2,11 @@ const db = require('../models');
 
 exports.getAllProducts = async(req, res) => {
     try {
-        const products = await db.Product.findAll();
+        const products = await db.Product.findAll(); // On interroge la table "products"
         res.json(products);
     } catch (error) {
-        res.status(500).send(error.message);
+        console.error('Erreur lors de la récupération des produits:', error);
+        res.status(500).json({ message: 'Erreur interne du serveur' });
     }
 };
 

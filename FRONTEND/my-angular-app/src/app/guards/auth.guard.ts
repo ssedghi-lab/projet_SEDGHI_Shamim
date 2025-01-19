@@ -7,7 +7,7 @@ import { ApiService } from '../services/api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate {
+export class authGuard implements CanActivate {
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     const token = this.apiService.getToken();
     if (token) {
       const decoded = this.apiService.decodeToken(token);
-      if (decoded && decoded.exp > Date.now() / 1000) { // Vérifier l'expiration
+      if (decoded && decoded.exp > Date.now() / 1000) { 
         return true;
       }
     }

@@ -27,7 +27,7 @@ export class CatalogueComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadProduits(); // On charge tous les produits une fois
+    this.loadProduits();
   }
 
   loadProduits(): void {

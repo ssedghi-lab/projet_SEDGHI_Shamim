@@ -2,13 +2,13 @@
 
 'use strict';
 
-require('dotenv').config(); // Charger les variables d'environnement
+require('dotenv').config();
 
 const express = require("express");
 const cors = require("cors");
 const path = require('path');
 const app = express();
-const db = require('./models'); // Importer Sequelize
+const db = require('./models');
 
 // Configuration des options CORS
 const corsOptions = {
@@ -19,14 +19,15 @@ const corsOptions = {
 };
 
 // Middleware
-app.use(cors(corsOptions)); // Middleware CORS
-app.use(express.json()); // Support JSON
-app.use(express.urlencoded({ extended: true })); // Support URL-encoded data
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use((req, res, next) => {
-        res.header('Access-Control-Expose-Headers', 'Authorization');
-        next();
-    })
-    // Chargement des routes API
+    res.header('Access-Control-Expose-Headers', 'Authorization');
+    next();
+})
+
+// Chargement des routes API
 require("./routes/product.routes")(app);
 require("./routes/user.routes")(app);
 
@@ -34,13 +35,8 @@ require("./routes/user.routes")(app);
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
-app.get('/api/products/products', (req, res) => {
-    res.json([
-        { id: 1, libelle: 'Produit A', prix: 10 },
-        { id: 2, libelle: 'Produit B', prix: 20 }
-    ]);
-});
-// Gestion des fichiers statiques de l'application Angular
+
+
 app.use(express.static(path.join(__dirname, 'FRONTEND/dist/my-angular-app')));
 
 // Route catch-all pour Angular (redirection vers index.html)
@@ -48,8 +44,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'FRONTEND/dist/my-angular-app/index.html'));
 });
 
-// Synchronisation de la base de données et démarrage du serveur
-db.sequelize.sync({ force: false }) // Mettre `force: true` pour recréer les tables à chaque démarrage (utiliser avec prudence)
+db.sequelize.sync({ force: false }) // Mettre `force: true` pour recréer les tables à chaque démarrage
     .then(() => {
         const port = process.env.SERVER_PORT || 3000;
         app.listen(port, () => {

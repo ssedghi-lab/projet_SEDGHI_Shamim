@@ -54,11 +54,11 @@ export class ApiService {
     );
   }
 
-  public getCalague(): Observable<Produit[]> {
-    const token = localStorage.getItem('token') || '';
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<Produit[]>(environment.backendCatalogue, { headers });
-  }
+  public getCatalogue(): Observable<Produit[]> {
+    const token = sessionStorage.getItem('token') || '';
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get<Produit[]>(environment.backendCatalogue, { headers });
+ }
   
 
   public addUser(user: { username: string; password: string }): Observable<any> {
@@ -94,7 +94,7 @@ export class ApiService {
   }
 
   public filter() {
-    return this.getCalague().pipe(
+    return this.getCatalogue().pipe(
       map((products: Produit[]) => {
         return products.filter(product => {
           let res = true;
@@ -116,15 +116,15 @@ export class ApiService {
   }
 
   public getToken(): string | null {
-    return sessionStorage.getItem('jwtToken'); // Utilise sessionStorage
+    return sessionStorage.getItem('jwtToken');
   }
 
   public setToken(token: string): void {
-    sessionStorage.setItem('jwtToken', token); // Utilise sessionStorage
+    sessionStorage.setItem('jwtToken', token);
   }
 
   public logout(): void {
-    sessionStorage.removeItem('jwtToken'); // Utilise sessionStorage
+    sessionStorage.removeItem('jwtToken'); 
     this.authUserSubject.next(undefined);
   }
 
