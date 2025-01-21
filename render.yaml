@@ -12,7 +12,7 @@ services:
     name: "cnamProjetShamim"
     runtime: "static"
     repo: "https://github.com/ssedghi-lab/projet_SEDGHI_Shamim"
-    buildCommand: "npm clean-install; npm run build"
+    buildCommand: "cd FRONTEND ; npm clean-install; npm run build ; cd .."
     staticPublishPath: "./FRONTEND/dist/my-angular-app/browser"
     routes:
       - type: "rewrite"
