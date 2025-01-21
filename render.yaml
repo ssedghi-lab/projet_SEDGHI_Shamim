@@ -1,0 +1,20 @@
+services:
+  - type: "web"
+    name: "cnamProjetShamim-backend"
+    repo: "https://github.com/ssedghi-lab/projet_SEDGHI_Shamim"
+    plan: "free"
+    region: "frankfurt"
+    runtime: "docker"
+    dockerContext: "./BACKEND"
+    dockerfilePath: "./BACKEND/Dockerfile"
+
+  - type: "web"
+    name: "cnamProjetShamim"
+    runtime: "static"
+    repo: "https://github.com/ssedghi-lab/projet_SEDGHI_Shamim"
+    buildCommand: "npm clean-install; npm run build"
+    staticPublishPath: "./FRONTEND/dist/my-angular-app/browser"
+    routes:
+      - type: "rewrite"
+        source: "/*"
+        destination: "/index.html"
