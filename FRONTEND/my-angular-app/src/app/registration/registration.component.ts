@@ -17,7 +17,6 @@ export class RegistrationComponent {
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService,
     private router: Router,
     private authservice : AuthService
   ) {

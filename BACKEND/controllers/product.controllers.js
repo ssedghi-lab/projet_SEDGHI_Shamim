@@ -1,8 +1,9 @@
 const db = require('../models');
+const { Op } = require('sequelize');
 
 exports.getAllProducts = async(req, res) => {
     try {
-        const products = await db.Product.findAll(); // On interroge la table "products"
+        const products = await db.Product.findAll();
         res.json(products);
     } catch (error) {
         console.error('Erreur lors de la récupération des produits:', error);
@@ -10,19 +11,7 @@ exports.getAllProducts = async(req, res) => {
     }
 };
 
-exports.get = async(req, res) => {
-    try {
-        // req.params.id -> identifiant du produit
-        const product = await db.Product.findOne({ where: { id: req.params.id } });
-        if (!product) {
-            return res.status(404).json({ message: 'Produit non trouvé' });
-        }
-        res.json(product);
-    } catch (error) {
-        console.error('Erreur lors de la récupération du produit:', error);
-        res.status(500).json({ error: 'Erreur interne du serveur' });
-    }
-};
+
 
 exports.add = async(req, res) => {
     const { ref, libelle, prix } = req.body;
@@ -38,3 +27,39 @@ exports.add = async(req, res) => {
         res.status(500).json({ error: 'Erreur interne du serveur' });
     }
 };
+
+exports.search = (req, res) => {
+    const query = req.query.query;
+
+    console.log('search', query)
+
+    if (!query || typeof query !== 'string') {
+        return res.status(400).json({
+            message: 'Invalid search query provided.'
+        });
+    }
+    db.Product.findAll({
+            where: {
+                libelle: {
+                    [Op.iLike]: `%${query}%`
+                }
+            },
+            attributes: ['id', 'ref', 'libelle', 'prix']
+        })
+        .then(data => {
+            if (data.length > 0) {
+                console.log(data);
+                res.status(200).json(data);
+            } else {
+                res.status(404).json({
+                    message: 'No products found matching the query.'
+                });
+            }
+        })
+        .catch(err => {
+            console.error("Error searching products:", err);
+            res.status(500).json({
+                message: err.message || "An error occurred while searching for products."
+            });
+        });
+}

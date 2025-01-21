@@ -21,10 +21,7 @@ const corsOptions = {
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use((req, res, next) => {
-//     res.header('Access-Control-Expose-Headers', 'Authorization');
-//     next();
-// })
+
 
 // Chargement des routes API
 require("./routes/product.routes")(app);
@@ -38,18 +35,8 @@ app.get('/', (req, res) => {
 
 app.use(express.static(path.join(__dirname, 'FRONTEND/dist/my-angular-app')));
 
-// Route catch-all pour Angular (redirection vers index.html)
-// app.get('*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'FRONTEND/dist/my-angular-app/index.html'));
-// });
 
-// db.sequelize.sync({ force: false }) // Mettre `force: true` pour recréer les tables à chaque démarrage
-//     .then(() => {
 const port = process.env.PORT || 443;
 app.listen(port, () => {
     console.log(`Serveur démarré sur http://localhost:${port}`);
 });
-// })
-// .catch(err => {
-//     console.error('Impossible de se connecter à la base de données:', err);
-// });

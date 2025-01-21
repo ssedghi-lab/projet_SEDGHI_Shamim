@@ -30,7 +30,7 @@ export class LoginFormComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const userId = this.apiService.getUserFromToken();
+    const userId = this.authService.getToken();
     if (userId) {
       this.apiService.getUser(userId).subscribe({
         next: (user: User | null) => {
@@ -45,24 +45,8 @@ export class LoginFormComponent implements OnInit {
       });
     }
   }
-  connexion() {
-    const username = this.connectionForm.get('username')?.value || '';
-    const password = this.connectionForm.get('password')?.value || '';
-    this.apiService.loginClient(username, password).subscribe({
-      next: (response) => {
-        if (response.body?.token) {
-          const token = response.body.token;
-          this.apiService.setToken(token);
-          this.router.navigate(['/products']); 
-        } else {
-          alert('Login échoué.');
-        }
-      },
-      error: () => alert('Informations de connexion invalides.')
-    });
-  }
+
   onSubmit() {
-    // La valeur sera '' si c’est null ou undefined
     const username = this.connectionForm.get('username')?.value ?? '';
     const password = this.connectionForm.get('password')?.value ?? '';
   
@@ -82,7 +66,7 @@ export class LoginFormComponent implements OnInit {
   }
   
   deconnexion() {
-    this.apiService.logout();
+    this.authService.logout();
     this.user = undefined;
     this.router.navigate(['/login']);
   }
