@@ -9,7 +9,6 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class SearchServiceService {
-  private API_URL = 'http://localhost:3000/api/products'; 
   
   private produitsSubject = new BehaviorSubject<Produit[]>([]);
   produits$ = this.produitsSubject.asObservable();
@@ -17,7 +16,7 @@ export class SearchServiceService {
   constructor(private http: HttpClient) {}
 
   filterProduits(searchTerm: string): void {
-    this.http.get<Produit[]>(`${this.API_URL}/search`, {
+    this.http.get<Produit[]>(environment.backendSearch, {
       params: { search: searchTerm }
     }).subscribe({
       next: (filteredData) => {

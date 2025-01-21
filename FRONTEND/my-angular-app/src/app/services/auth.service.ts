@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 interface LoginResponse {
   token: string;
@@ -14,18 +15,17 @@ interface UserProfile {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/user';
 
   constructor(private http: HttpClient) {}
 
  
 
       registerUser(userData: { username: string; password: string }) {
-        return this.http.post(`${this.apiUrl}/register`, userData);
+        return this.http.post(environment.backendAddClient, userData);
       }
     
       loginUser(userData: { username: string; password: string }) {
-        return this.http.post<{ token: string }>(`${this.apiUrl}/login`, userData);
+        return this.http.post<{ token: string }>(environment.backendLoginClient, userData);
       }
     
     setToken(token: string) {

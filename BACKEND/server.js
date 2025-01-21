@@ -1,8 +1,7 @@
 // /BACKEND/server.js
 
+require('dotenv').config()
 'use strict';
-
-require('dotenv').config();
 
 const express = require("express");
 const cors = require("cors");
@@ -40,17 +39,17 @@ app.get('/', (req, res) => {
 app.use(express.static(path.join(__dirname, 'FRONTEND/dist/my-angular-app')));
 
 // Route catch-all pour Angular (redirection vers index.html)
-app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'FRONTEND/dist/my-angular-app/index.html'));
-});
+// app.get('*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'FRONTEND/dist/my-angular-app/index.html'));
+// });
 
-db.sequelize.sync({ force: false }) // Mettre `force: true` pour recréer les tables à chaque démarrage
-    .then(() => {
-        const port = process.env.SERVER_PORT || 3000;
-        app.listen(port, () => {
-            console.log(`Serveur démarré sur http://localhost:${port}`);
-        });
-    })
-    .catch(err => {
-        console.error('Impossible de se connecter à la base de données:', err);
-    });
+// db.sequelize.sync({ force: false }) // Mettre `force: true` pour recréer les tables à chaque démarrage
+//     .then(() => {
+const port = process.env.PORT || 443;
+app.listen(port, () => {
+    console.log(`Serveur démarré sur http://localhost:${port}`);
+});
+// })
+// .catch(err => {
+//     console.error('Impossible de se connecter à la base de données:', err);
+// });

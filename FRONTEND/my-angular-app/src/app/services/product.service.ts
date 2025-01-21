@@ -9,11 +9,10 @@ import { environment } from '../environments/environment';
 
 
 export class ProductService {
-  private baseURL = `${environment.apiUrl}/products/products`;
 
   constructor(private http: HttpClient) {}
 
   getProduits(): Observable<Produit[]> {
-    return this.http.get<Produit[]>(this.baseURL);
+    return this.http.get<Produit[]>(environment.backendCatalogue);
   }
 }
