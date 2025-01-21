@@ -1,5 +1,5 @@
 // const apiUrl = "http://localhost:3000/api"
-const apiUrl = "https://cnamapp-6goz.onrender.com/api"
+const apiUrl = "https://cnamprojetshamim-backend.onrender.com/api"
 
 export const environment = {
   production: false,
