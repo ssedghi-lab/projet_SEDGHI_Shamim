@@ -54,7 +54,7 @@ export class ApiService {
     );
   }
 
-  public getCatalogue(): Observable<Produit[]> {
+public getCatalogue(): Observable<Produit[]> {
     const token = sessionStorage.getItem('token') || '';
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   return this.http.get<Produit[]>(environment.backendCatalogue, { headers });

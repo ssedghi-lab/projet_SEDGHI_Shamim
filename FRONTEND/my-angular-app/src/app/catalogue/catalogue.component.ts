@@ -23,6 +23,7 @@ export class CatalogueComponent implements OnInit {
 
   constructor(
     private produitService: ProductService,
+    private searchService: SearchServiceService,
     private store: Store
   ) {}
 
@@ -33,9 +34,7 @@ export class CatalogueComponent implements OnInit {
   loadProduits(): void {
     this.produitService.getProduits().subscribe({
       next: (data) => {
-        // On stocke la liste complète
         this.originalProduits = data;
-        // On affiche la même liste au départ
         this.produits = data;
       },
       error: (err) => {
@@ -44,19 +43,23 @@ export class CatalogueComponent implements OnInit {
     });
   }
 
-  /** Filtrage local */
+ 
   onSearchChange(): void {
-    // Si la barre de recherche est vide, on réaffiche tout
     if (!this.searchTerm.trim()) {
       this.produits = this.originalProduits;
       return;
     }
 
-    const lowerTerm = this.searchTerm.toLowerCase();
-    this.produits = this.originalProduits.filter((produit) =>
-      produit.libelle.toLowerCase().includes(lowerTerm)
-    );
+    this.searchService.searchProduits(this.searchTerm.trim()).subscribe({
+      next: (data) => {
+        this.produits = data;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la recherche des produits :', err);
+      }
+    });
   }
+
   ajouterAuPanier(produit: Produit) {
     this.store.dispatch(new AddProduit(produit));
   

@@ -1,0 +1,11 @@
+<!-- product-search.component.html -->
+<div *ngIf="produits$ | async as produits; else noResults">
+    <ul>
+        <li *ngFor="let produit of produits">
+            {{ produit.libelle }} - {{ produit.prix }}
+        </li>
+    </ul>
+</div>
+<ng-template #noResults>
+    <p>Aucun produit trouvé.</p>
+</ng-template>

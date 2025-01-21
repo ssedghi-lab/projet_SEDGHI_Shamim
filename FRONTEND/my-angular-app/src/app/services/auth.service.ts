@@ -15,32 +15,32 @@ interface UserProfile {
   providedIn: 'root'
 })
 export class AuthService {
-
+  private token: string | null = null;
   constructor(private http: HttpClient) {}
 
  
 
-      registerUser(userData: { username: string; password: string }) {
-        return this.http.post(environment.backendAddClient, userData);
-      }
-    
-      loginUser(userData: { username: string; password: string }) {
-        return this.http.post<{ token: string }>(environment.backendLoginClient, userData);
-      }
-    
-    setToken(token: string) {
-     sessionStorage.setItem('token', token);
-     }
+  registerUser(userData: { username: string; password: string }): Observable<any> {
+    return this.http.post(environment.backendAddClient, userData);
+  }
 
-     getToken(): string | null {
-      return sessionStorage.getItem('token');
-    }
+  loginUser(userData: { username: string; password: string }): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(environment.backendLoginClient, userData);
+  }
 
-    isLoggedIn(): boolean {
-     return !!this.getToken(); 
-    }
+  setToken(token: string) {
+    this.token = token;
+  }
 
-   logout() {
-   sessionStorage.removeItem('token');
-    }
+  getToken(): string | null {
+    return this.token;
+  }
+
+  isLoggedIn(): boolean {
+    return this.token !== null;
+  }
+
+  logout() {
+    this.token = null;
+  }
 }

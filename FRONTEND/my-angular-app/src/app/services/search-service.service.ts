@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Produit } from '../shared/model/produit.model';
 import { environment } from '../environments/environment';
 
@@ -9,24 +8,12 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class SearchServiceService {
-  
-  private produitsSubject = new BehaviorSubject<Produit[]>([]);
-  produits$ = this.produitsSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
-  filterProduits(searchTerm: string): void {
-    this.http.get<Produit[]>(environment.backendSearch, {
-      params: { search: searchTerm }
-    }).subscribe({
-      next: (filteredData) => {
-        this.produitsSubject.next(filteredData);
-      },
-      error: (err) => {
-        console.error('Erreur lors de la récupération filtrée:', err);
-        this.produitsSubject.next([]);
-      }
-    });
+  searchProduits(term: string): Observable<Produit[]> {
+    const url = `${environment.apiUrl}/products/search?query=${term}`;
+    return this.http.get<Produit[]>(url);
   }
-
 }
+
