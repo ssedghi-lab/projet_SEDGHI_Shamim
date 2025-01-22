@@ -7,7 +7,7 @@ module.exports = app => {
 
     router.get('/', productController.getAllProducts);
     router.post('/add', productController.add);
-    router.get('/search/:query', productController.search);
+    router.get('/search', productController.search);
 
     app.use('/api/products', router);
 };
